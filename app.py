@@ -1,4 +1,5 @@
 
+
 import io
 import pickle
 from pathlib import Path
@@ -14,13 +15,13 @@ import plotly.graph_objects as go
 
 MODEL_NAME = "sales_prediction_model.pkl"
 FEATURES = ["youtube", "facebook", "newspaper"]
+
 APP_DIR = Path(__file__).resolve().parent
 
 st.set_page_config(
     page_title="AdVision | Sales Intelligence",
     page_icon="📊",
-    layout="wide",
-    initial_sidebar_state="collapsed"
+    layout="wide"
 )
 
 
@@ -48,8 +49,7 @@ def load_from_bytes(data):
 
 @st.cache_resource
 def load_model_from_path(path):
-    data = Path(path).read_bytes()
-    return load_from_bytes(data)
+    return load_from_bytes(Path(path).read_bytes())
 
 
 # =====================================================
@@ -116,9 +116,10 @@ header[data-testid="stHeader"] {
 .hero p {
     color: #B4B8D0;
     font-size: 15px;
+    line-height: 1.8;
 }
 
-/* HEADINGS */
+/* SECTION HEADINGS */
 
 .section-heading {
     font-family: 'Space Grotesk', sans-serif;
@@ -175,13 +176,13 @@ div[data-testid="stNumberInput"] input {
     color: white;
 }
 
-/* RESULT */
+/* RESULT CARD */
 
 .result-card {
     background: linear-gradient(135deg, #192846, #25204A);
     border: 1px solid #6255B9;
     border-radius: 22px;
-    padding: 30px;
+    padding: 35px;
     text-align: center;
     margin-top: 25px;
 }
@@ -228,6 +229,7 @@ div[data-testid="stNumberInput"] input {
 
 st.markdown("""
 <div class="hero">
+
     <div class="hero-tag">
         ✦ MARKETING INTELLIGENCE PLATFORM
     </div>
@@ -241,15 +243,15 @@ st.markdown("""
         <br>
         Powered by Machine Learning.
     </p>
+
 </div>
 """, unsafe_allow_html=True)
 
 
 # =====================================================
-# LOAD MODEL
+# LOAD TRAINED MODEL
 # =====================================================
 
-model = None
 model_path = find_model_file()
 
 if model_path is not None:
@@ -303,7 +305,9 @@ st.markdown(
 col1, col2, col3 = st.columns(3)
 
 with col1:
+
     with st.container(border=True):
+
         st.markdown("### 📺 YouTube")
         st.caption("Video advertising")
 
@@ -317,8 +321,11 @@ with col1:
 
         st.caption("Reach audiences through video campaigns.")
 
+
 with col2:
+
     with st.container(border=True):
+
         st.markdown("### 📱 Facebook")
         st.caption("Social media advertising")
 
@@ -332,8 +339,11 @@ with col2:
 
         st.caption("Engage audiences through social campaigns.")
 
+
 with col3:
+
     with st.container(border=True):
+
         st.markdown("### 📰 Newspaper")
         st.caption("Print advertising")
 
@@ -368,7 +378,7 @@ metric4.metric("Newspaper", f"{newspaper:,.2f}")
 
 
 # =====================================================
-# PREDICTION
+# GENERATE PREDICTION
 # =====================================================
 
 st.markdown("<br>", unsafe_allow_html=True)
@@ -385,11 +395,12 @@ if st.button("✦ GENERATE SALES PREDICTION", type="primary"):
         prediction = model.predict(input_df)
         result = float(prediction[0])
 
-        # RESULT CARD
+        # PREDICTION RESULT
 
         st.markdown(
             f"""
             <div class="result-card">
+
                 <div class="result-label">
                     ✦ YOUR PREDICTED SALES
                 </div>
@@ -401,6 +412,7 @@ if st.button("✦ GENERATE SALES PREDICTION", type="primary"):
                 <div class="result-subtitle">
                     Machine Learning prediction based on your campaign investment
                 </div>
+
             </div>
             """,
             unsafe_allow_html=True
@@ -413,8 +425,6 @@ if st.button("✦ GENERATE SALES PREDICTION", type="primary"):
             unsafe_allow_html=True
         )
 
-        # Interactive donut chart
-
         labels = ["YouTube", "Facebook", "Newspaper"]
         values = [youtube, facebook, newspaper]
 
@@ -426,7 +436,11 @@ if st.button("✦ GENERATE SALES PREDICTION", type="primary"):
                     hole=0.68,
                     textinfo="label+percent",
                     marker=dict(
-                        colors=["#9575FF", "#39C6E8", "#FFB86B"]
+                        colors=[
+                            "#9575FF",
+                            "#39C6E8",
+                            "#FFB86B"
+                        ]
                     ),
                     hovertemplate=(
                         "<b>%{label}</b><br>"
@@ -441,20 +455,31 @@ if st.button("✦ GENERATE SALES PREDICTION", type="primary"):
         fig.update_layout(
             title={
                 "text": "Advertising Budget Distribution",
-                "font": {"color": "white", "size": 20}
+                "font": {
+                    "color": "white",
+                    "size": 20
+                }
             },
             font=dict(color="#E5E7F5"),
             paper_bgcolor="#111629",
             plot_bgcolor="#111629",
             showlegend=False,
             height=400,
-            margin=dict(t=70, b=20, l=20, r=20),
+            margin=dict(
+                t=70,
+                b=20,
+                l=20,
+                r=20
+            ),
             annotations=[
                 dict(
                     text=f"TOTAL<br>{total_budget:,.0f}",
                     x=0.5,
                     y=0.5,
-                    font=dict(size=20, color="white"),
+                    font=dict(
+                        size=20,
+                        color="white"
+                    ),
                     showarrow=False
                 )
             ]
@@ -475,7 +500,7 @@ if st.button("✦ GENERATE SALES PREDICTION", type="primary"):
             use_container_width=True
         )
 
-        # DOWNLOAD RESULTS
+        # DOWNLOAD REPORT
 
         result_df = input_df.copy()
         result_df["predicted_sales"] = result
@@ -490,6 +515,7 @@ if st.button("✦ GENERATE SALES PREDICTION", type="primary"):
         )
 
     except Exception as e:
+
         st.error(f"Prediction failed: {e}")
 
 
@@ -499,6 +525,7 @@ if st.button("✦ GENERATE SALES PREDICTION", type="primary"):
 
 st.markdown("""
 <div class="footer">
+
     ADVISION © 2026
     &nbsp; | &nbsp;
     BUILT WITH MACHINE LEARNING & STREAMLIT
@@ -506,5 +533,7 @@ st.markdown("""
     <br><br>
 
     Turning Data Into Decisions.
+
 </div>
 """, unsafe_allow_html=True)
+
