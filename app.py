@@ -78,4 +78,4 @@ if st.button("Predict Sales", type="primary"):
         st.dataframe(input_df, hide_index=True)
     except Exception as e:
         st.error(f"Prediction failed: {e}")
-i feel this ui is very boring give me some good aesthetic ui so that i can be unique and apart fromt he crowd
+
